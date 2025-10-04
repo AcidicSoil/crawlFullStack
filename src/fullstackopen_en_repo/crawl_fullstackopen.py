@@ -17,12 +17,12 @@ from rich.progress import Progress
 
 from crawl4ai import AsyncWebCrawler
 from crawl4ai.async_configs import BrowserConfig, CrawlerRunConfig
-from crawl4ai.markdown_generation import DefaultMarkdownGenerator
+from crawl4ai.markdown_generation_strategy import DefaultMarkdownGenerator
 
 import tomli
 import requests
 
-from utils_slug import slug, numbered, path_from_parts
+from .utils_slug import slug, numbered, path_from_parts
 
 APP = typer.Typer(add_completion=False)
 ROOT = Path(__file__).resolve().parents[1]

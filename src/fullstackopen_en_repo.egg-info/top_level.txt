@@ -1,1 +1,4 @@
+assets
+data
 fullstackopen_en_repo
+logs

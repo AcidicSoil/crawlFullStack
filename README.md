@@ -6,19 +6,19 @@ This repo mirrors **<https://fullstackopen.com/en/>** to local Markdown for pers
 
 The primary motivation for this project is to create a personal, offline-first copy of the excellent Full Stack Open curriculum. This allows for:
 
--   **Offline Access:** Study the course material without an internet connection.
--   **Local Search:** Use local search tools like `grep` or `ripgrep` to instantly find content across the entire course.
--   **Programmatic Use:** Enables building other tools on top of the content, such as flashcard generators or concept extractors.
--   **Long-Term Archive:** Preserves a personal copy of the course material.
+- **Offline Access:** Study the course material without an internet connection.
+- **Local Search:** Use local search tools like `grep` or `ripgrep` to instantly find content across the entire course.
+- **Programmatic Use:** Enables building other tools on top of the content, such as flashcard generators or concept extractors.
+- **Long-Term Archive:** Preserves a personal copy of the course material.
 
 ## Features
 
-*   **Web Crawling:** Uses `crawl4ai` to efficiently crawl and download the course content.
-*   **Markdown Conversion:** Converts the HTML content to clean, readable Markdown.
-*   **Image Downloading:** Downloads and locally stores all images referenced in the course.
-*   **Link Fixing:** Rewrites all links to point to the local Markdown files, ensuring a seamless offline experience.
-*   **Link Validation:** A pre-commit hook is included to validate all internal links, preventing broken links.
-*   **Safety First:** The crawler is configured with strict guardrails to only crawl the `/en/` section of `fullstackopen.com`, honors `robots.txt`, and uses conservative concurrency settings.
+- **Web Crawling:** Uses `crawl4ai` to efficiently crawl and download the course content.
+- **Markdown Conversion:** Converts the HTML content to clean, readable Markdown.
+- **Image Downloading:** Downloads and locally stores all images referenced in the course.
+- **Link Fixing:** Rewrites all links to point to the local Markdown files, ensuring a seamless offline experience.
+- **Link Validation:** A pre-commit hook is included to validate all internal links, preventing broken links.
+- **Safety First:** The crawler is configured with strict guardrails to only crawl the `/en/` section of `fullstackopen.com`, honors `robots.txt`, and uses conservative concurrency settings.
 
 ## Install
 
@@ -100,9 +100,9 @@ fullstackopen-en-repo/
 
 ## Refresh later
 
--   Update `seeds.txt` if the course gains new parts.
--   Re-run with `--since YYYY-MM-DD` to limit fetches.
--   Deterministic queue: URLs sorted, stable slugging, normalized headings.
+- Update `seeds.txt` if the course gains new parts.
+- Re-run with `--since YYYY-MM-DD` to limit fetches.
+- Deterministic queue: URLs sorted, stable slugging, normalized headings.
 
 ## Pre-commit hook
 
