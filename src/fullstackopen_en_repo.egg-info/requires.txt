@@ -1,0 +1,15 @@
+crawl4ai
+beautifulsoup4
+markdownify
+python-slugify
+tqdm
+requests
+rich
+typer
+tomli
+
+[dev]
+ruff
+mypy
+bandit
+playwright
