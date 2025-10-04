@@ -6,37 +6,39 @@
 }
 ---[Skip to content](../part8/01-graph-ql-server-course-main-content.md)
 [{() => fs}](https://fullstackopen.com/en/)
-  * [About course](../about/01-about.md)
-  * [Course contents](../#course-contents/01-course-contents.md)
-  * [FAQ](../faq/01-faq.md)
-  * [Partners](../companies/01-companies.md)
-  * [Challenge](../challenge/01-challenge.md)
+
+- [About course](../about/01-about.md)
+- [Course contents](../#course-contents/01-course-contents.md)
+- [FAQ](../faq/01-faq.md)
+- [Partners](../companies/01-companies.md)
+- [Challenge](../challenge/01-challenge.md)
 [Search from the material](../search/01-search.md)Toggle dark theme
-Select languageSuomi English 中文 Español Français Português(BR) 
+Select languageSuomi English 中文 Español Français Português(BR)
 
 [Fullstack](../#course-contents/01-course-contents.md)
 [Part 8](../part8/01-part8.md)
 GraphQL-server
 a GraphQL-server
-  * [Schemas and queries](../part8/01-graph-ql-server-schemas-and-queries.md)
-  * [Apollo Server](../part8/01-graph-ql-server-apollo-server.md)
-  * [Apollo Studio Explorer](../part8/01-graph-ql-server-apollo-studio-explorer.md)
-  * [Parameters of a resolver](../part8/01-graph-ql-server-parameters-of-a-resolver.md)
-  * [The default resolver](../part8/01-graph-ql-server-the-default-resolver.md)
-  * [Object within an object](../part8/01-graph-ql-server-object-within-an-object.md)
-  * [Mutations](../part8/01-graph-ql-server-mutations.md)
-  * [Error handling](../part8/01-graph-ql-server-error-handling.md)
-  * [Enum](../part8/01-graph-ql-server-enum.md)
-  * [Changing a phone number](../part8/01-graph-ql-server-changing-a-phone-number.md)
-  * [More on queries](../part8/01-graph-ql-server-more-on-queries.md)
-  * [Exercises 8.1.-8.7](../part8/01-graph-ql-server-exercises-8-1-8-7.md)
+
+- [Schemas and queries](../part8/01-graph-ql-server-schemas-and-queries.md)
+- [Apollo Server](../part8/01-graph-ql-server-apollo-server.md)
+- [Apollo Studio Explorer](../part8/01-graph-ql-server-apollo-studio-explorer.md)
+- [Parameters of a resolver](../part8/01-graph-ql-server-parameters-of-a-resolver.md)
+- [The default resolver](../part8/01-graph-ql-server-the-default-resolver.md)
+- [Object within an object](../part8/01-graph-ql-server-object-within-an-object.md)
+- [Mutations](../part8/01-graph-ql-server-mutations.md)
+- [Error handling](../part8/01-graph-ql-server-error-handling.md)
+- [Enum](../part8/01-graph-ql-server-enum.md)
+- [Changing a phone number](../part8/01-graph-ql-server-changing-a-phone-number.md)
+- [More on queries](../part8/01-graph-ql-server-more-on-queries.md)
+- [Exercises 8.1.-8.7](../part8/01-graph-ql-server-exercises-8-1-8-7.md)
 
 
 [b React and GraphQL](../part8/01-react-and-graph-ql.md)[c Database and user administration](../part8/01-database-and-user-administration.md)[d Login and updating the cache](../part8/01-login-and-updating-the-cache.md)[e Fragments and subscriptions](../part8/01-fragments-and-subscriptions.md)
 a
 # GraphQL-server
 REST, familiar to us from the previous parts of the course, has long been the most prevalent way to implement the interfaces servers offer for browsers, and in general the integration between different applications on the web.
-In recent years, 
+In recent years,
 The GraphQL philosophy is very different from REST. REST is _resource-based_. Every resource, for example a _user_ , has its own address which identifies it, for example _/users/10_. All operations done to the resource are done with HTTP requests to its URL. The action depends on the HTTP method used.
 The resource-basedness of REST works well in most situations. However, it can be a bit awkward sometimes.
 Let's consider the following example: our bloglist application contains some kind of social media functionality, and we would like to show a list of all the blogs that were added by users who have commented on any of the blogs of the users we follow.
@@ -45,6 +47,7 @@ If this was an often-used functionality, there could be a REST endpoint for it. 
 A GraphQL server is well-suited for these kinds of situations.
 The main principle of GraphQL is that the code on the browser forms a _query_ describing the data wanted, and sends it to the API with an HTTP POST request. Unlike REST, all GraphQL queries are sent to the same address, and their type is POST.
 The data described in the above scenario could be fetched with (roughly) the following query:
+
 ```
 query FetchBlogsQuery {
   user(username: "mluukkai") {
@@ -65,6 +68,7 @@ query FetchBlogsQuery {
 
 The content of the `FetchBlogsQuery` can be roughly interpreted as: find a user named `"mluukkai"` and for each of his `followedUsers`, find all their `blogs`, and for each blog, all its `comments`, and for each `user` who wrote each comment, find their `blogs`, and return the `title` of each of them.
 The server's response would be about the following JSON object:
+
 ```
 {
   "data": {
@@ -103,7 +107,8 @@ The server's response would be about the following JSON object:
 The application logic stays simple, and the code on the browser gets exactly the data it needs with a single query.
 ### Schemas and queries
 We will get to know the basics of GraphQL by implementing a GraphQL version of the phonebook application from parts 2 and 3.
-In the heart of all GraphQL applications is a 
+In the heart of all GraphQL applications is a
+
 ```
 type Person {
   name: String!
@@ -120,12 +125,13 @@ type Query {
 }copy
 ```
 
-The schema describes two _Person_ , determines that persons have five fields. Four of the fields are type _String_ , which is one of the _phone_ , must be given a value. This is marked by the exclamation mark on the schema. The type of the field _id_ is _ID_. _ID_ fields are strings, but GraphQL ensures they are unique. 
-The second type is a 
+The schema describes two _Person_ , determines that persons have five fields. Four of the fields are type _String_ , which is one of the _phone_ , must be given a value. This is marked by the exclamation mark on the schema. The type of the field _id_ is _ID_. _ID_ fields are strings, but GraphQL ensures they are unique.
+The second type is a
 The phonebook describes three different queries. _personCount_ returns an integer, _allPersons_ returns a list of _Person_ objects and _findPerson_ is given a string parameter and it returns a _Person_ object.
 Again, exclamation marks are used to mark which return values and parameters are _Non-Null_. _personCount_ will, for sure, return an integer. The query _findPerson_ must be given a string as a parameter. The query returns a _Person_ -object or _null_. _allPersons_ returns a list of _Person_ objects, and the list does not contain any _null_ values.
 So the schema describes what queries the client can send to the server, what kind of parameters the queries can have, and what kind of data the queries return.
 The simplest of the queries, _personCount_ , looks as follows:
+
 ```
 query {
   personCount
@@ -133,6 +139,7 @@ query {
 ```
 
 Assuming our application has saved the information of three people, the response would look like this:
+
 ```
 {
   "data": {
@@ -142,6 +149,7 @@ Assuming our application has saved the information of three people, the response
 ```
 
 The query fetching the information of all of the people, _allPersons_ , is a bit more complicated. Because the query returns a list of _Person_ objects, the query must describe _which_ of the objects the query returns:
+
 ```
 query {
   allPersons {
@@ -152,6 +160,7 @@ query {
 ```
 
 The response could look like this:
+
 ```
 {
   "data": {
@@ -174,6 +183,7 @@ The response could look like this:
 ```
 
 A query can be made to return any field described in the schema. For example, the following would also be possible:
+
 ```
 query {
   allPersons{
@@ -185,6 +195,7 @@ query {
 ```
 
 The last example shows a query which requires a parameter, and returns the details of one person.
+
 ```
 query {
   findPerson(name: "Arto Hellas") {
@@ -198,6 +209,7 @@ query {
 
 So, first, the parameter is described in round brackets, and then the fields of the return value object are listed in curly brackets.
 The response is like this:
+
 ```
 {
   "data": {
@@ -212,6 +224,7 @@ The response is like this:
 ```
 
 The return value was marked as nullable, so if we search for the details of an unknown
+
 ```
 query {
   findPerson(name: "Joe Biden") {
@@ -221,6 +234,7 @@ query {
 ```
 
 the return value is _null_.
+
 ```
 {
   "data": {
@@ -233,14 +247,16 @@ As you can see, there is a direct link between a GraphQL query and the returned 
 GraphQL query describes only the data moving between a server and the client. On the server, the data can be organized and saved any way we like.
 Despite its name, GraphQL does not actually have anything to do with databases. It does not care how the data is saved. The data a GraphQL API uses can be saved into a relational database, document database, or to other servers which a GraphQL server can access with for example REST.
 ### Apollo Server
-Let's implement a GraphQL server with today's leading library: 
+Let's implement a GraphQL server with today's leading library:
 Create a new npm project with _npm init_ and install the required dependencies.
+
 ```
 npm install @apollo/server graphqlcopy
 ```
 
 Also create a `index.js` file in your project's root directory.
 The initial code is as follows:
+
 ```
 const { ApolloServer } = require('@apollo/server')
 const { startStandaloneServer } = require('@apollo/server/standalone')
@@ -305,7 +321,8 @@ startStandaloneServer(server, {
 })copy
 ```
 
-The heart of the code is an 
+The heart of the code is an
+
 ```
 const server = new ApolloServer({
   typeDefs,
@@ -316,6 +333,7 @@ const server = new ApolloServer({
 The first parameter, _typeDefs_ , contains the GraphQL schema.
 The second parameter is an object, which contains the _how_ GraphQL queries are responded to.
 The code of the resolvers is the following:
+
 ```
 const resolvers = {
   Query: {
@@ -328,6 +346,7 @@ const resolvers = {
 ```
 
 As you can see, the resolvers correspond to the queries described in the schema.
+
 ```
 type Query {
   personCount: Int!
@@ -338,6 +357,7 @@ type Query {
 
 So there is a field under _Query_ for every query described in the schema.
 The query
+
 ```
 query {
   personCount
@@ -345,12 +365,14 @@ query {
 ```
 
 Has the resolver
+
 ```
 () => persons.lengthcopy
 ```
 
 So the response to the query is the length of the array _persons_.
 The query which fetches all persons
+
 ```
 query {
   allPersons {
@@ -360,18 +382,20 @@ query {
 ```
 
 has a resolver which returns _all_ objects from the _persons_ array.
+
 ```
 () => personscopy
 ```
 
 Start the server by running `node index.js` in the terminal.
 ### Apollo Studio Explorer
-When Apollo server is run in development mode the page _Query your server_ that takes us to 
+When Apollo server is run in development mode the page _Query your server_ that takes us to
 Let's try it out:
 ![apollo studio Example Query with response allPersons](../assets/64ab5073393a9665.png)
 At the left side Explorer shows the API-documentation that it has automatically generated based on the schema.
 ### Parameters of a resolver
 The query fetching a single person
+
 ```
 query {
   findPerson(name: "Arto Hellas") {
@@ -383,14 +407,16 @@ query {
 ```
 
 has a resolver which differs from the previous ones because it is given _two parameters_ :
+
 ```
 (root, args) => persons.find(p => p.name === args.name)copy
 ```
 
 The second parameter, _args_ , contains the parameters of the query. The resolver then returns from the array _persons_ the person whose name is the same as the value of _args.name_. The resolver does not need the first parameter _root_.
-In fact, all resolver functions are given 
+In fact, all resolver functions are given
 ### The default resolver
 When we do a query, for example
+
 ```
 query {
   findPerson(name: "Arto Hellas") {
@@ -403,7 +429,8 @@ query {
 
 the server knows to send back exactly the fields required by the query. How does that happen?
 A GraphQL server must define resolvers for _each_ field of each type in the schema. We have so far only defined resolvers for fields of the type _Query_ , so for each query of the application.
-Because we did not define resolvers for the fields of the type _Person_ , Apollo has defined 
+Because we did not define resolvers for the fields of the type _Person_ , Apollo has defined
+
 ```
 const resolvers = {
   Query: {
@@ -417,6 +444,7 @@ const resolvers = {
 The default resolver returns the value of the corresponding field of the object. The object itself can be accessed through the first parameter of the resolver, _root_.
 If the functionality of the default resolver is enough, you don't need to define your own. It is also possible to define resolvers for only some fields of a type, and let the default resolvers handle the rest.
 We could for example define that the address of all persons is _Manhattan New York_ by hard-coding the following to the resolvers of the street and city fields of the type _Person_ :
+
 ```
 Person: {
   street: (root) => "Manhattan",
@@ -426,6 +454,7 @@ Person: {
 
 ### Object within an object
 Let's modify the schema a bit
+
 ```
 type Address {  street: String!  city: String! }
 type Person {
@@ -443,6 +472,7 @@ type Query {
 
 so a person now has a field with the type _Address_ , which contains the street and the city.
 The queries requiring the address change into
+
 ```
 query {
   findPerson(name: "Arto Hellas") {
@@ -456,6 +486,7 @@ query {
 ```
 
 and the response is now a person object, which _contains_ an address object.
+
 ```
 {
   "data": {
@@ -471,6 +502,7 @@ and the response is now a person object, which _contains_ an address object.
 ```
 
 We still save the persons in the server the same way we did before.
+
 ```
 let persons = [
   {
@@ -487,6 +519,7 @@ let persons = [
 The person-objects saved in the server are not exactly the same as the GraphQL type _Person_ objects described in the schema.
 Contrary to the _Person_ type, the _Address_ type does not have an _id_ field, because they are not saved into their own separate data structure in the server.
 Because the objects saved in the array do not have an _address_ field, the default resolver is not sufficient. Let's add a resolver for the _address_ field of _Person_ type :
+
 ```
 const resolvers = {
   Query: {
@@ -503,6 +536,7 @@ The current code of the application can be found on _part8-1_.
 ### Mutations
 Let's add a functionality for adding new persons to the phonebook. In GraphQL, all operations which cause a change are done with _Mutation_.
 The schema for a mutation for adding a new person looks as follows:
+
 ```
 type Mutation {
   addPerson(
@@ -516,6 +550,7 @@ type Mutation {
 
 The Mutation is given the details of the person as parameters. The parameter _phone_ is the only one which is nullable. The Mutation also has a return value. The return value is type _Person_ , the idea being that the details of the added person are returned if the operation is successful and if not, null. Value for the field _id_ is not given as a parameter. Generating an id is better left for the server.
 Mutations also require a resolver:
+
 ```
 const { v1: uuid } = require('uuid')
 
@@ -534,8 +569,9 @@ const resolvers = {
 ```
 
 The mutation adds the object given to it as a parameter _args_ to the array _persons_ , and returns the object it added to the array.
-The _id_ field is given a unique value using the 
+The _id_ field is given a unique value using the
 A new person can be added with the following mutation
+
 ```
 mutation {
   addPerson(
@@ -556,6 +592,7 @@ mutation {
 ```
 
 Note that the person is saved to the _persons_ array as
+
 ```
 {
   name: "Pekka Mikkola",
@@ -567,6 +604,7 @@ Note that the person is saved to the _persons_ array as
 ```
 
 But the response to the mutation is
+
 ```
 {
   "data": {
@@ -587,9 +625,10 @@ So the resolver of the _address_ field of the _Person_ type formats the response
 ### Error handling
 If we try to create a new person, but the parameters do not correspond with the schema description, the server gives an error message:
 ![apollo showing error with addPerson GRAPHQL VALIDATION FAILED](../assets/234ba43e5087bcdd.png)
-So some of the error handling can be automatically done with GraphQL 
-However, GraphQL cannot handle everything automatically. For example, stricter rules for data sent to a Mutation have to be added manually. An error could be handled by throwing 
+So some of the error handling can be automatically done with GraphQL
+However, GraphQL cannot handle everything automatically. For example, stricter rules for data sent to a Mutation have to be added manually. An error could be handled by throwing
 Let's prevent adding the same name to the phonebook multiple times:
+
 ```
 const { GraphQLError } = require('graphql')
 // ...
@@ -612,6 +651,7 @@ So if the name to be added already exists in the phonebook, throw _GraphQLError_
 The current code of the application can be found on _part8-2_.
 ### Enum
 Let's add a possibility to filter the query returning all persons with the parameter _phone_ so that it returns only persons with a phone number
+
 ```
 query {
   allPersons(phone: YES) {
@@ -622,6 +662,7 @@ query {
 ```
 
 or persons without a phone number
+
 ```
 query {
   allPersons(phone: NO) {
@@ -631,6 +672,7 @@ query {
 ```
 
 The schema changes like so:
+
 ```
 enum YesNo {  YES  NO}
 type Query {
@@ -641,6 +683,7 @@ type Query {
 
 The type _YesNo_ is a GraphQL _YES_ or _NO_. In the query _allPersons_ , the parameter _phone_ has the type _YesNo_ , but is nullable.
 The resolver changes like so:
+
 ```
 Query: {
   personCount: () => persons.length,
@@ -651,6 +694,7 @@ Query: {
 
 ### Changing a phone number
 Let's add a mutation for changing the phone number of a person. The schema of this mutation looks as follows:
+
 ```
 type Mutation {
   addPerson(
@@ -663,6 +707,7 @@ type Mutation {
 ```
 
 and is done by a resolver:
+
 ```
 Mutation: {
   // ...
@@ -683,6 +728,7 @@ The mutation finds the person to be updated by the field _name_.
 The current code of the application can be found on _part8-3_.
 ### More on queries
 With GraphQL, it is possible to combine multiple fields of type _Query_ , or "separate queries" into one query. For example, the following query returns both the amount of persons in the phonebook and their names:
+
 ```
 query {
   personCount
@@ -693,6 +739,7 @@ query {
 ```
 
 The response looks as follows:
+
 ```
 {
   "data": {
@@ -713,6 +760,7 @@ The response looks as follows:
 ```
 
 Combined query can also use the same query multiple times. You must however give the queries alternative names like so:
+
 ```
 query {
   havePhone: allPersons(phone: YES){
@@ -725,6 +773,7 @@ query {
 ```
 
 The response looks like:
+
 ```
 {
   "data": {
@@ -745,12 +794,13 @@ The response looks like:
 }copy
 ```
 
-In some cases, it might be beneficial to name the queries. This is the case especially when the queries or mutations have 
+In some cases, it might be beneficial to name the queries. This is the case especially when the queries or mutations have
 ### Exercises 8.1.-8.7
 Through the exercises, we will implement a GraphQL backend for a small library. Start with _npm init_ and to install dependencies!
 #### 8.1: The number of books and authors
 Implement queries _bookCount_ and _authorCount_ which return the number of books and the number of authors.
 The query
+
 ```
 query {
   bookCount
@@ -759,6 +809,7 @@ query {
 ```
 
 should return
+
 ```
 {
   "data": {
@@ -771,6 +822,7 @@ should return
 #### 8.2: All books
 Implement query _allBooks_ , which returns the details of all books.
 In the end, the user should be able to do the following query:
+
 ```
 query {
   allBooks { 
@@ -785,6 +837,7 @@ query {
 #### 8.3: All authors
 Implement query _allAuthors_ , which returns the details of all authors. The response should include a field _bookCount_ containing the number of books the author has written.
 For example the query
+
 ```
 query {
   allAuthors {
@@ -795,6 +848,7 @@ query {
 ```
 
 should return
+
 ```
 {
   "data": {
@@ -827,6 +881,7 @@ should return
 #### 8.4: Books of an author
 Modify the _allBooks_ query so that a user can give an optional parameter _author_. The response should include only books written by that author.
 For example query
+
 ```
 query {
   allBooks(author: "Robert Martin") {
@@ -836,6 +891,7 @@ query {
 ```
 
 should return
+
 ```
 {
   "data": {
@@ -854,6 +910,7 @@ should return
 #### 8.5: Books by genre
 Modify the query _allBooks_ so that a user can give an optional parameter _genre_. The response should include only books of that genre.
 For example query
+
 ```
 query {
   allBooks(genre: "refactoring") {
@@ -864,6 +921,7 @@ query {
 ```
 
 should return
+
 ```
 {
   "data": {
@@ -890,6 +948,7 @@ should return
 ```
 
 The query must work when both optional parameters are given:
+
 ```
 query {
   allBooks(author: "Robert Martin", genre: "refactoring") {
@@ -901,6 +960,7 @@ query {
 
 #### 8.6: Adding a book
 Implement mutation _addBook_ , which can be used like this:
+
 ```
 mutation {
   addBook(
@@ -916,6 +976,7 @@ mutation {
 ```
 
 The mutation works even if the author is not already saved to the server:
+
 ```
 mutation {
   addBook(
@@ -931,6 +992,7 @@ mutation {
 ```
 
 If the author is not yet saved to the server, a new author is added to the system. The birth years of authors are not saved to the server yet, so the query
+
 ```
 query {
   allAuthors {
@@ -942,6 +1004,7 @@ query {
 ```
 
 returns
+
 ```
 {
   "data": {
@@ -959,6 +1022,7 @@ returns
 
 #### 8.7: Updating the birth year of an author
 Implement mutation _editAuthor_ , which can be used to set a birth year for an author. The mutation is used like so:
+
 ```
 mutation {
   editAuthor(name: "Reijo Mäki", setBornTo: 1958) {
@@ -969,6 +1033,7 @@ mutation {
 ```
 
 If the correct author is found, the operation returns the edited author:
+
 ```
 {
   "data": {
@@ -981,6 +1046,7 @@ If the correct author is found, the operation returns the edited author:
 ```
 
 If the author is not in the system, _null_ is returned:
+
 ```
 {
   "data": {
@@ -989,5 +1055,5 @@ If the author is not in the system, _null_ is returned:
 }copy
 ```
 
-[ Part 7 **Previous part** ](../part7/01-part7.md)[ Part 8b **Next part** ](../part8/01-react-and-graph-ql.md)
+[Part 7 **Previous part**](../part7/01-part7.md)[Part 8b **Next part**](../part8/01-react-and-graph-ql.md)
 [About course](../about/01-about.md)[Course contents](../#course-contents/01-course-contents.md)[FAQ](../faq/01-faq.md)[Partners](../companies/01-companies.md)[Challenge](../challenge/01-challenge.md)

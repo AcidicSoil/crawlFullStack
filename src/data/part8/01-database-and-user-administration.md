@@ -6,24 +6,26 @@
 }
 ---[Skip to content](../part8/01-database-and-user-administration-course-main-content.md)
 [{() => fs}](https://fullstackopen.com/en/)
-  * [About course](../about/01-about.md)
-  * [Course contents](../#course-contents/01-course-contents.md)
-  * [FAQ](../faq/01-faq.md)
-  * [Partners](../companies/01-companies.md)
-  * [Challenge](../challenge/01-challenge.md)
+
+- [About course](../about/01-about.md)
+- [Course contents](../#course-contents/01-course-contents.md)
+- [FAQ](../faq/01-faq.md)
+- [Partners](../companies/01-companies.md)
+- [Challenge](../challenge/01-challenge.md)
 [Search from the material](../search/01-search.md)Toggle dark theme
-Select languageSuomi English 中文 Español Français Português(BR) 
+Select languageSuomi English 中文 Español Français Português(BR)
 
 [Fullstack](../#course-contents/01-course-contents.md)
 [Part 8](../part8/01-part8.md)
 Database and user administration
 [a GraphQL-server](../part8/01-graph-ql-server.md)[b React and GraphQL](../part8/01-react-and-graph-ql.md)
 c Database and user administration
-  * [Mongoose and Apollo](../part8/01-database-and-user-administration-mongoose-and-apollo.md)
-  * [Validation](../part8/01-database-and-user-administration-validation.md)
-  * [User and log in](../part8/01-database-and-user-administration-user-and-log-in.md)
-  * [Friends list](../part8/01-database-and-user-administration-friends-list.md)
-  * [Exercises 8.13.-8.16](../part8/01-database-and-user-administration-exercises-8-13-8-16.md)
+
+- [Mongoose and Apollo](../part8/01-database-and-user-administration-mongoose-and-apollo.md)
+- [Validation](../part8/01-database-and-user-administration-validation.md)
+- [User and log in](../part8/01-database-and-user-administration-user-and-log-in.md)
+- [Friends list](../part8/01-database-and-user-administration-friends-list.md)
+- [Exercises 8.13.-8.16](../part8/01-database-and-user-administration-exercises-8-13-8-16.md)
 
 
 [d Login and updating the cache](../part8/01-login-and-updating-the-cache.md)[e Fragments and subscriptions](../part8/01-fragments-and-subscriptions.md)
@@ -32,12 +34,14 @@ c
 We will now add user management to our application, but let's first start using a database for storing data.
 ### Mongoose and Apollo
 Install Mongoose and dotenv:
+
 ```
 npm install mongoose dotenvcopy
 ```
 
 We will imitate what we did in parts [3](../part3/01-saving-data-to-mongo-db.md) and [4](../part4/01-structure-of-backend-application-introduction-to-testing.md).
 The person schema has been defined as follows:
+
 ```
 const mongoose = require('mongoose')
 
@@ -68,6 +72,7 @@ module.exports = mongoose.model('Person', schema)copy
 
 We also included a few validations. _required: true_ , which makes sure that a value exists, is actually redundant: we already ensure that the fields exist with GraphQL. However, it is good to also keep validation in the database.
 We can get the application to mostly work with the following changes:
+
 ```
 // ...
 const mongoose = require('mongoose')
@@ -124,8 +129,9 @@ const resolvers = {
 ```
 
 The changes are pretty straightforward. However, there are a few noteworthy things. As we remember, in Mongo, the identifying field of an object is called __id_ and we previously had to parse the name of the field to _id_ ourselves. Now GraphQL can do this automatically.
-Another noteworthy thing is that the resolver functions now return a _promise_ , when they previously returned normal objects. When a resolver returns a promise, Apollo server 
+Another noteworthy thing is that the resolver functions now return a _promise_ , when they previously returned normal objects. When a resolver returns a promise, Apollo server
 For example, if the following resolver function is executed,
+
 ```
 allPersons: async (root, args) => {
   return Person.find({})
@@ -133,6 +139,7 @@ allPersons: async (root, args) => {
 ```
 
 Apollo server waits for the promise to resolve, and returns the result. So Apollo works roughly like this:
+
 ```
 allPersons: async (root, args) => {
   const result = await Person.find({})
@@ -141,6 +148,7 @@ allPersons: async (root, args) => {
 ```
 
 Let's complete the _allPersons_ resolver so it takes the optional parameter _phone_ into account:
+
 ```
 Query: {
   // ..
@@ -155,17 +163,20 @@ Query: {
 ```
 
 So if the query has not been given a parameter _phone_ , all persons are returned. If the parameter has the value _YES_ , the result of the query
+
 ```
 Person.find({ phone: { $exists: true }})copy
 ```
 
 is returned, so the objects in which the field _phone_ has a value. If the parameter has the value _NO_ , the query returns the objects in which the _phone_ field has no value:
+
 ```
 Person.find({ phone: { $exists: false }})copy
 ```
 
 ### Validation
-As well as in GraphQL, the input is now validated using the validations defined in the mongoose schema. For handling possible validation errors in the schema, we must add an error-handling _try/catch_ block to the _save_ method. When we end up in the catch, we throw an exception 
+As well as in GraphQL, the input is now validated using the validations defined in the mongoose schema. For handling possible validation errors in the schema, we must add an error-handling _try/catch_ block to the _save_ method. When we end up in the catch, we throw an exception
+
 ```
 Mutation: {
   addPerson: async (root, args) => {
@@ -189,6 +200,7 @@ The code of the backend can be found on _part8-4_.
 ### User and log in
 Let's add user management to our application. For simplicity's sake, let's assume that all users have the same password which is hardcoded to the system. It would be straightforward to save individual passwords for all users following the principles from [part 4](../part4/01-user-administration.md), but because our focus is on GraphQL, we will leave out all that extra hassle this time.
 The user schema is as follows:
+
 ```
 const mongoose = require('mongoose')
 
@@ -212,6 +224,7 @@ module.exports = mongoose.model('User', schema)copy
 Every user is connected to a bunch of other persons in the system through the _friends_ field. The idea is that when a user, e.g. _mluukkai_ , adds a person, e.g. _Arto Hellas_ , to the list, the person is added to their _friends_ list. This way, logged-in users can have their own personalized view in the application.
 Logging in and identifying the user are handled the same way we used in [part 4](../part4/01-token-authentication.md) when we used REST, by using tokens.
 Let's extend the schema like so:
+
 ```
 type User {
   username: String!
@@ -242,6 +255,7 @@ type Mutation {
 
 The query _me_ returns the currently logged-in user. New users are created with the _createUser_ mutation, and logging in happens with the _login_ mutation.
 The resolvers of the mutations are as follows:
+
 ```
 const jwt = require('jsonwebtoken')
 
@@ -284,6 +298,7 @@ Mutation: {
 
 The new user mutation is straightforward. The login mutation checks if the username/password pair is valid. And if it is indeed valid, it returns a jwt token familiar from [part 4](../part4/01-token-authentication.md). Note that the _JWT_SECRET_ must be defined in the _.env_ file.
 User creation is done now as follows:
+
 ```
 mutation {
   createUser (
@@ -296,6 +311,7 @@ mutation {
 ```
 
 The mutation for logging in looks like this:
+
 ```
 mutation {
   login (
@@ -310,7 +326,8 @@ mutation {
 Just like in the previous case with REST, the idea now is that a logged-in user adds a token they receive upon login to all of their requests. And just like with REST, the token is added to GraphQL queries using the _Authorization_ header.
 In the Apollo Explorer, the header is added to a query like so:
 ![apollo explorer highlighting headers with authorization and bearer token](../assets/a59cae1780ec6d5f.png)
-Modify the startup of the backend by giving the function that handles the startup 
+Modify the startup of the backend by giving the function that handles the startup
+
 ```
 startStandaloneServer(server, {
   listen: { port: 4000 },
@@ -319,9 +336,10 @@ startStandaloneServer(server, {
 })copy
 ```
 
-The object returned by context is given to all resolvers as their _third parameter_. Context is the right place to do things which are shared by multiple resolvers, like 
+The object returned by context is given to all resolvers as their _third parameter_. Context is the right place to do things which are shared by multiple resolvers, like
 So our code sets the object corresponding to the user who made the request to the _currentUser_ field of the context. If there is no user connected to the request, the value of the field is undefined.
 The resolver of the _me_ query is very simple: it just returns the logged-in user it receives in the _currentUser_ field of the third parameter of the resolver, _context_. It's worth noting that if there is no logged-in user, i.e. there is no valid token in the header attached to the request, the query returns _null_ :
+
 ```
 Query: {
   // ...
@@ -337,6 +355,7 @@ If the header has the correct value, the query returns the user information iden
 Let's complete the application's backend so that adding and editing persons requires logging in, and added persons are automatically added to the friends list of the user.
 Let's first remove all persons not in anyone's friends list from the database.
 _addPerson_ mutation changes like so:
+
 ```
 Mutation: {
     addPerson: async (root, args, context) => {      const person = new Person({ ...args })
@@ -362,6 +381,7 @@ Mutation: {
 
 If a logged-in user cannot be found from the context, an _GraphQLError_ with a proper message is thrown. Creating new persons is now done with _async/await_ syntax, because if the operation is successful, the created person is added to the friends list of the user.
 Let's also add functionality for adding an existing user to your friends list. The mutation is as follows:
+
 ```
 type Mutation {
   // ...
@@ -372,6 +392,7 @@ type Mutation {
 ```
 
 And the mutation's resolver:
+
 ```
   addAsFriend: async (root, args, { currentUser }) => {
     const isFriend = (person) => 
@@ -395,17 +416,20 @@ And the mutation's resolver:
 ```
 
 Note how the resolver _destructures_ the logged-in user from the context. So instead of saving _currentUser_ to a separate variable in a function
+
 ```
 addAsFriend: async (root, args, context) => {
   const currentUser = context.currentUsercopy
 ```
 
 it is received straight in the parameter definition of the function:
+
 ```
 addAsFriend: async (root, args, { currentUser }) => {copy
 ```
 
 The following query now returns the user's friends list:
+
 ```
 query {
   me {
@@ -422,8 +446,9 @@ The code of the backend can be found on _part8-5_.
 ### Exercises 8.13.-8.16
 The following exercises are quite likely to break your frontend. Do not worry about it yet; the frontend shall be fixed and expanded in the next chapter.
 #### 8.13: Database, part 1
-Change the library application so that it saves the data to a database. You can find the _mongoose schema_ for books and authors from 
+Change the library application so that it saves the data to a database. You can find the _mongoose schema_ for books and authors from
 Let's change the book graphql schema a little
+
 ```
 type Book {
   title: String!
@@ -436,13 +461,15 @@ type Book {
 so that instead of just the author's name, the book object contains all the details of the author.
 You can assume that the user will not try to add faulty books or authors, so you don't have to care about validation errors.
 The following things do _not_ have to work just yet:
-  * _allBooks_ query with parameters
-  * _bookCount_ field of an author object
-  * _author_ field of a book
-  * _editAuthor_ mutation
+
+- _allBooks_ query with parameters
+- _bookCount_ field of an author object
+- _author_ field of a book
+- _editAuthor_ mutation
 
 
 **Note** : despite the fact that author is now an _object_ within a book, the schema for adding a book can remain same, only the _name_ of the author is given as a parameter
+
 ```
 type Mutation {
   addBook(
@@ -456,11 +483,12 @@ type Mutation {
 
 #### 8.14: Database, part 2
 Complete the program so that all queries (to get _allBooks_ working with the parameter _author_ and _bookCount_ field of an author object is not required) and mutations work.
-Regarding the _genre_ parameter of the all books query, the situation is a bit more challenging. The solution is simple, but finding it can be a headache. You might benefit from 
+Regarding the _genre_ parameter of the all books query, the situation is a bit more challenging. The solution is simple, but finding it can be a headache. You might benefit from
 #### 8.15 Database, part 3
-Complete the program so that database validation errors (e.g. book title or author name being too short) are handled sensibly. This means that they cause 
+Complete the program so that database validation errors (e.g. book title or author name being too short) are handled sensibly. This means that they cause
 #### 8.16 user and logging in
 Add user management to your application. Expand the schema like so:
+
 ```
 type User {
   username: String!
@@ -493,5 +521,5 @@ type Mutation {
 Create resolvers for query _me_ and the new mutations _createUser_ and _login_. Like in the course material, you can assume all users have the same hardcoded password.
 Make the mutations _addBook_ and _editAuthor_ possible only if the request includes a valid token.
 (Don't worry about fixing the frontend for the moment.)
-[ Part 8b **Previous part** ](../part8/01-react-and-graph-ql.md)[ Part 8d **Next part** ](../part8/01-login-and-updating-the-cache.md)
+[Part 8b **Previous part**](../part8/01-react-and-graph-ql.md)[Part 8d **Next part**](../part8/01-login-and-updating-the-cache.md)
 [About course](../about/01-about.md)[Course contents](../#course-contents/01-course-contents.md)[FAQ](../faq/01-faq.md)[Partners](../companies/01-companies.md)[Challenge](../challenge/01-challenge.md)

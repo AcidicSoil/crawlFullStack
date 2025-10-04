@@ -6,13 +6,14 @@
 }
 ---[Skip to content](../#main-content/01-main-content.md)
 [{() => fs}](https://fullstackopen.com/en/)
-  * [About course](../about/01-about.md)
-  * [Course contents](../#course-contents/01-course-contents.md)
-  * [FAQ](../faq/01-faq.md)
-  * [Partners](../companies/01-companies.md)
-  * [Challenge](../challenge/01-challenge.md)
+
+- [About course](../about/01-about.md)
+- [Course contents](../#course-contents/01-course-contents.md)
+- [FAQ](../faq/01-faq.md)
+- [Partners](../companies/01-companies.md)
+- [Challenge](../challenge/01-challenge.md)
 [Search from the material](../search/01-search.md)Toggle dark theme
-Select languageSuomi English 中文 Español Français Português(BR) 
+Select languageSuomi English 中文 Español Français Português(BR)
 
 # Deep Dive Into Modern Web Development
 ## Full Stack open
@@ -23,14 +24,15 @@ Learn React, Redux, Node.js, MongoDB, GraphQL and TypeScript in one go! This cou
 ### Announcements
 _Questions about the course? Read carefully[Part 0](../part0/01-general-info.md), that has an answer to most of them..._
 No more yearly versions, the course just continues without any break! See [here](../part0/01-no-more-yearly-versions.md) for more details.
-You can discuss the course and related topics in our dedicated group on Discord 
-  * See [here](../part0/01-general-info-how-to-get-help-in-discord.md) how to ask questions in a proper way
+You can discuss the course and related topics in our dedicated group on Discord
+
+- See [here](../part0/01-general-info-how-to-get-help-in-discord.md) how to ask questions in a proper way
 
 
 ![](../assets/58f68fa8acff3b30.png)
 ### Authors and License
-Parts 0-8 and 13 of the course material is written by 
-The course material is licensed under 
+Parts 0-8 and 13 of the course material is written by
+The course material is licensed under
 [![Fundamentals of Web apps](../assets/58f68fa8acff3b30.png)](https://fullstackopen.com/en/part0)
 ## Part 0
 Fundamentals of Web apps

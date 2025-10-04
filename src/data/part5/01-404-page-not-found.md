@@ -6,13 +6,14 @@
 }
 ---[Skip to content](../part5/01-end-to-end-testing-main-content.md)
 [{() => fs}](https://fullstackopen.com/)
-  * [About course](https://fullstackopen.com/about)
-  * [Course contents](https://fullstackopen.com/#course-contents)
-  * [FAQ](https://fullstackopen.com/faq)
-  * [Partners](https://fullstackopen.com/companies)
-  * [Challenge](https://fullstackopen.com/challenge)
+
+- [About course](https://fullstackopen.com/about)
+- [Course contents](https://fullstackopen.com/#course-contents)
+- [FAQ](https://fullstackopen.com/faq)
+- [Partners](https://fullstackopen.com/companies)
+- [Challenge](https://fullstackopen.com/challenge)
 [Search from the material](https://fullstackopen.com/search)Toggle dark theme
-Select languageSuomi English 中文 Español Français Português(BR) 
+Select languageSuomi English 中文 Español Français Português(BR)
 
 # 404 - Page not found
 Uncaught ReferenceError: unknown is not defined

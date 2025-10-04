@@ -6,13 +6,14 @@
 }
 ---[Skip to content](../about/01-main-content.md)
 [{() => fs}](https://fullstackopen.com/en/)
-  * [About course](../about/01-about.md)
-  * [Course contents](../#course-contents/01-course-contents.md)
-  * [FAQ](../faq/01-faq.md)
-  * [Partners](../companies/01-companies.md)
-  * [Challenge](../challenge/01-challenge.md)
+
+- [About course](../about/01-about.md)
+- [Course contents](../#course-contents/01-course-contents.md)
+- [FAQ](../faq/01-faq.md)
+- [Partners](../companies/01-companies.md)
+- [Challenge](../challenge/01-challenge.md)
 [Search from the material](../search/01-search.md)Toggle dark theme
-Select languageSuomi English 中文 Español Français Português(BR) 
+Select languageSuomi English 中文 Español Français Português(BR)
 
 ![Stacked cubes with React logo and JavaScript text](../assets/715bef355cb3f42d.png)
 # General
@@ -21,10 +22,10 @@ This course serves as an introduction to modern web application development with
 The course covers testing, configuration and environment management, the use of databases for storing the application’s data amongst other things.
 The course is totally free of charge. You can get a certificate and even the University of Helsinki ECTS credits for free.
 The course is worth 5-14 credits, and the content is the same as in the [project](../part0/01-general-info-full-stack-project.md) that is worth 1-10 credits.
-Partners and affiliates of the course include 
+Partners and affiliates of the course include
 Participants are expected to have good programming skills, basic knowledge of web programming and databases, and to know the basics of working with the Git version-control system. You are also expected to have perseverance and the ability for independent problem solving and information seeking.
 [Part 0](../part0/01-general-info.md) of the course material goes through the content and conduct of the course in more detail. Make sure to read the material and instructions thoroughly.
-You can discuss the course and related topics in our dedicated group on Discord 
+You can discuss the course and related topics in our dedicated group on Discord
 [![Fundamentals of Web apps](../assets/715bef355cb3f42d.png)](https://fullstackopen.com/en/part0)
 ## Part 0
 Fundamentals of Web apps

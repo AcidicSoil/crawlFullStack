@@ -6,23 +6,25 @@
 }
 ---[Skip to content](../part7/01-exercises-extending-the-bloglist-course-main-content.md)
 [{() => fs}](https://fullstackopen.com/en/)
-  * [About course](../about/01-about.md)
-  * [Course contents](../#course-contents/01-course-contents.md)
-  * [FAQ](../faq/01-faq.md)
-  * [Partners](../companies/01-companies.md)
-  * [Challenge](../challenge/01-challenge.md)
+
+- [About course](../about/01-about.md)
+- [Course contents](../#course-contents/01-course-contents.md)
+- [FAQ](../faq/01-faq.md)
+- [Partners](../companies/01-companies.md)
+- [Challenge](../challenge/01-challenge.md)
 [Search from the material](../search/01-search.md)Toggle dark theme
-Select languageSuomi English 中文 Español Français Português(BR) 
+Select languageSuomi English 中文 Español Français Português(BR)
 
 [Fullstack](../#course-contents/01-course-contents.md)
 [Part 7](../part7/01-part7.md)
 Exercises: extending the bloglist
 [a React Router](../part7/01-react-router.md)[b Custom hooks](../part7/01-custom-hooks.md)[c More about styles](../part7/01-more-about-styles.md)[d Webpack](../part7/01-webpack.md)[e Class components, Miscellaneous](../part7/01-class-components-miscellaneous.md)
 f Exercises: extending the bloglist
-  * [Exercises 7.9.-7.21.](../part7/01-exercises-extending-the-bloglist-exercises-7-9-7-21.md)
-  * [State Management: Redux](../part7/01-exercises-extending-the-bloglist-state-management-redux.md)
-  * [State Management: React Query and Context](../part7/01-exercises-extending-the-bloglist-state-management-react-query-and-context.md)
-  * [Views](../part7/01-exercises-extending-the-bloglist-views.md)
+
+- [Exercises 7.9.-7.21.](../part7/01-exercises-extending-the-bloglist-exercises-7-9-7-21.md)
+- [State Management: Redux](../part7/01-exercises-extending-the-bloglist-state-management-redux.md)
+- [State Management: React Query and Context](../part7/01-exercises-extending-the-bloglist-state-management-react-query-and-context.md)
+- [Views](../part7/01-exercises-extending-the-bloglist-views.md)
 
 
 f
@@ -31,7 +33,7 @@ In addition to the eight exercises in the [React router](../part7/01-react-route
 If you do not want to use your BlogList application, you are free to use the code from the model solution as a starting point for these exercises.
 Many of the exercises in this part of the course material will require the refactoring of existing code. This is a common reality of extending existing applications, meaning that refactoring is an important and necessary skill even if it may feel difficult and unpleasant at times.
 One good piece of advice for both refactoring and writing new code is to take _baby steps_. Losing your sanity is almost guaranteed if you leave the application in a completely broken state for long periods while refactoring.
-### Exercises 7.9.-7.21.
+### Exercises 7.9.-7.21
 #### 7.9: Automatic Code Formatting
 In the previous parts, we used ESLint to ensure that the code follows the defined conventions. _an opinionated code formatter_ , that is, Prettier not only controls the code style but also formats the code according to the definition.
 Prettier is easy to integrate into the code editor so that when it is saved, it is automatically formatted.
@@ -73,6 +75,7 @@ _**NB:**_ you will almost certainly stumble across the following error message d
 ![browser TypeError cannot read property name of undefined](../assets/4af89205f9231aa4.png)
 The error message will occur if you refresh the individual user page.
 The cause of the issue is that, when we navigate directly to the page of an individual user, the React application has not yet received the data from the backend. One solution for this problem is to use conditional rendering:
+
 ```
 const User = () => {
   const user = ...
@@ -107,6 +110,6 @@ Extend your application so that users can add comments to blog posts from the fr
 Improve the appearance of your application by applying one of the methods shown in the course material.
 #### 7.21: Styles, step 2
 You can mark this exercise as finished if you use an hour or more for styling your application.
-This was the last exercise for this part of the course and it's time to push your code to GitHub and mark all of your finished exercises to the 
-[ Part 7e **Previous part** ](../part7/01-class-components-miscellaneous.md)[ Part 8 **Next part** ](../part8/01-part8.md)
+This was the last exercise for this part of the course and it's time to push your code to GitHub and mark all of your finished exercises to the
+[Part 7e **Previous part**](../part7/01-class-components-miscellaneous.md)[Part 8 **Next part**](../part8/01-part8.md)
 [About course](../about/01-about.md)[Course contents](../#course-contents/01-course-contents.md)[FAQ](../faq/01-faq.md)[Partners](../companies/01-companies.md)[Challenge](../challenge/01-challenge.md)

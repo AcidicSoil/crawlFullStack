@@ -6,13 +6,14 @@
 }
 ---[Siirry sisältöön](../part0/01-mailto-matti-luukkainen-helsinki-fi-main-content.md)
 [{() => fs}](https://fullstackopen.com/)
-  * [Kurssista](https://fullstackopen.com/about)
-  * [Kurssin sisältö](https://fullstackopen.com/#course-contents)
-  * [FAQ](https://fullstackopen.com/faq)
-  * [Kurssilla mukana](https://fullstackopen.com/companies)
-  * [Haaste](https://fullstackopen.com/challenge)
+
+- [Kurssista](https://fullstackopen.com/about)
+- [Kurssin sisältö](https://fullstackopen.com/#course-contents)
+- [FAQ](https://fullstackopen.com/faq)
+- [Kurssilla mukana](https://fullstackopen.com/companies)
+- [Haaste](https://fullstackopen.com/challenge)
 [Hae materiaalista](https://fullstackopen.com/search)Käytä tummaa teemaa
-Valitse kieliSuomi English 中文 Español Français Português(BR) 
+Valitse kieliSuomi English 中文 Español Français Português(BR)
 
 # 404 - Sivua ei löytynyt
 Uncaught ReferenceError: unknown is not defined

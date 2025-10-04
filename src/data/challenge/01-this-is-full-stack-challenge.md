@@ -6,13 +6,14 @@
 }
 ---[Skip to content](../challenge/01-main-content.md)
 [{() => fs}](https://fullstackopen.com/en/)
-  * [About course](../about/01-about.md)
-  * [Course contents](../#course-contents/01-course-contents.md)
-  * [FAQ](../faq/01-faq.md)
-  * [Partners](../companies/01-companies.md)
-  * [Challenge](../challenge/01-challenge.md)
+
+- [About course](../about/01-about.md)
+- [Course contents](../#course-contents/01-course-contents.md)
+- [FAQ](../faq/01-faq.md)
+- [Partners](../companies/01-companies.md)
+- [Challenge](../challenge/01-challenge.md)
 [Search from the material](../search/01-search.md)Toggle dark theme
-Select languageSuomi English 中文 Español Français Português(BR) 
+Select languageSuomi English 中文 Español Français Português(BR)
 
 ![Stacked cubes with React logo and JavaScript text](../assets/08023344b3984963.svg)
 # This is Full Stack -challenge
@@ -20,7 +21,7 @@ The world is in dire need of software developers. We want to help breed the next
 The University of Helsinki and Houston Inc. have partnered up to challenge both individual developers and companies alike to learn and build upon their expertise in true Full Stack spirit. Among our affiliates and challenge initiators are Elisa Oyj, K-ryhmä, Konecranes Oyj, Terveystalo Oyj, and Unity Technologies Finland Ltd.
 Our objective is to encourage learning. We offer a fully-assembled and purposefully-scoped Full Stack course that lowers the barrier of entry for learning about new state-of-the-art and production grade technologies. The course is free of charge and you can participate from anywhere at anytime, at your leisure.
 The course is built by coders for coders, and offers something for both newcomers and seasoned industry veterans alike. The only prerequisite is a solid grasp of basic programming fundamentals.
-## Companies, Heed The Call!
+## Companies, Heed The Call
 By accepting the challenge you are encouraging and empowering the members of your working community to acquire new skills. The fully-online Full Stack course will make a great addition to your internal training and development programs and will serve well as self-study material amongst your other in-company training offerings.
 By partaking in the challenge, you will send a strong message to the outside world about your company’s technical expertise — this will help build your employer image and increase your visibility to software industry professionals.
 Joining the challenge is free of charge. Companies that heed the call and accept the challenge will have their logo proudly placed on the Full Stack course webpage.
