@@ -13,3 +13,7 @@ __pycache__/
 *~
 .DS_Store
 /codefetch/
+.vscode/
+.gemini/
+.crawl4ai/
+fullstackopen_en_repo.egg-info/

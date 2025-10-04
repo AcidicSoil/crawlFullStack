@@ -24,6 +24,11 @@ import requests
 
 from .utils_slug import slug, numbered, path_from_parts
 
+PART_OR_CHILD_RE = re.compile(
+    r"^https?://(?:www\.)?fullstackopen\.com/en/part\d+(?:/[a-z0-9_]+)*/?$",
+    re.I,
+)
+
 APP = typer.Typer(add_completion=False)
 ROOT = Path(__file__).resolve().parents[1]
 DATA_DIR = ROOT / "data"
@@ -32,9 +37,14 @@ LOG_DIR = ROOT / "logs"
 CONFIG_PATH = ROOT / "crawl.config.yml"
 SEEDS_PATH = ROOT / "seeds.txt"
 
+# Crawl4AI writes robots cache into ~/.crawl4ai by default. That location can be
+# read-only in sandboxed environments, so redirect into the project tree unless
+# the caller already set a base directory.
+os.environ.setdefault("CRAWL4_AI_BASE_DIRECTORY", str(ROOT))
+
 UA_DEFAULT = "Mozilla/5.0 (compatible; FullstackOpenMirror/1.0; +https://example.invalid/personal-use)"
 DOMAIN = "fullstackopen.com"
-PATH_PREFIX = "/en/"
+PATH_PREFIX = "/en"
 
 # --------- helpers ---------
 @dataclass
@@ -56,17 +66,17 @@ def load_config() -> dict:
 
 
 def allowed_url(url: str, cfg: dict) -> bool:
-    if not url.startswith(f"https://{DOMAIN}") and not url.startswith(f"http://{DOMAIN}"):
+    if not (url.startswith(f"https://{DOMAIN}") or url.startswith(f"http://{DOMAIN}")):
         return False
-    path = re.sub(r"https?://[^/]+", "", url)
-    if not path.startswith(PATH_PREFIX):
+    path = re.sub(r"https?://[^/]+", "", url)  # e.g., "/en", "/en/part1"
+    p = path.rstrip("/")  # accept both /en and /en/
+    if not (p == PATH_PREFIX or p.startswith(PATH_PREFIX + "/")):
         return False
     for rx in cfg.get("deny_path_regex", []):
         if re.search(rx, path):
             return False
     if cfg.get("allow_path_regex"):
-        ok = any(re.search(rx, path) for rx in cfg["allow_path_regex"])
-        if not ok:
+        if not any(re.search(rx, path) for rx in cfg["allow_path_regex"]):
             return False
     qpos = url.find("?")
     if qpos != -1:
@@ -119,17 +129,79 @@ def sha256(s: str) -> str:
     return hashlib.sha256(s.encode("utf-8")).hexdigest()
 
 
+# path: src/fullstackopen_en_repo/crawl_fullstackopen.py
 # --------- core crawl ---------
-async def crawl_once(url: str, browser_cfg: BrowserConfig, run_cfg: CrawlerRunConfig, save_html: bool) -> Tuple[str, str, str]:
-    async with AsyncWebCrawler(config=browser_cfg) as crawler:
+async def crawl_once(
+    url: str,
+    browser_cfg: BrowserConfig,
+    run_cfg: CrawlerRunConfig,
+    save_html: bool,
+    cfg: dict,
+) -> Tuple[str, str, str, list[str]]:
+    """
+    Fetch one URL and return:
+      - markdown (str)
+      - html (str)
+      - title (str)
+      - children (List[str]) → canonicalized in-scope internal links for enqueueing
+        (filtered to /en/partN[/...])
+    """
+    import re
+
+    PART_OR_CHILD_RE = re.compile(
+        r"^https?://(?:www\.)?fullstackopen\.com/en/part\d+(?:/[a-z0-9_]+)*/?$",
+        re.I,
+    )
+
+    async with AsyncWebCrawler(config=browser_cfg, base_directory=str(ROOT)) as crawler:
         result = await crawler.arun(url=url, config=run_cfg)
         if not getattr(result, "success", True):
-            raise RuntimeError(f"crawl failed {url}: {result.error_message}")
-        md = result.markdown or ""
+            raise RuntimeError(f"crawl failed {url}: {getattr(result, 'error_message', 'unknown error')}")
+
+        # Markdown may be a strategy object; prefer raw_markdown when present
+        md_obj = result.markdown
+        md = getattr(md_obj, "raw_markdown", None) or getattr(md_obj, "fit_markdown", None) or md_obj or ""
         html = result.html or ""
-        title = result.title or BeautifulSoup(html, "lxml").title.string if html else ""
-        title = (title or "untitled").strip()
-        return md, html, title
+
+        # Title: prefer H1 from markdown, then result.title, then <title>
+        title = None
+        for line in (md.splitlines() if isinstance(md, str) else []):
+            if line.startswith("# "):
+                title = line[2:].strip()
+                break
+        if not title:
+            from bs4 import BeautifulSoup
+            title = (getattr(result, "title", None) or (BeautifulSoup(html, "lxml").title.string if html else "") or "untitled").strip()
+
+        # Collect internal children for BFS expansion (only /en/partN[/...] pages)
+        children: set[str] = set()
+
+        def consider(href: str):
+            if not href:
+                return
+            href = canonicalize(href, cfg)
+            if allowed_url(href, cfg) and PART_OR_CHILD_RE.match(href):
+                children.add(href)
+
+        # Prefer structured links from Crawl4AI
+        links = getattr(result, "links", None)
+        if links and isinstance(links, dict):
+            for link in (links.get("internal") or []):
+                consider(link.get("href"))
+
+        # Fallback: parse anchors from HTML if structured links absent
+        if not children and html:
+            from bs4 import BeautifulSoup
+            for a in BeautifulSoup(html, "lxml").select("a[href]"):
+                consider(a.get("href"))
+
+        # Deterministic ordering
+        ordered_children = sorted(children)
+
+        # (Optional) save_html handled by caller; we just return content & links
+        return md, html, title, ordered_children
+
+
 
 
 def build_run_config(cfg: dict) -> Tuple[BrowserConfig, CrawlerRunConfig]:
@@ -201,7 +273,7 @@ def download_images(md: str, url: str, cfg: dict) -> Tuple[str, list[str]]:
             except Exception:
                 pass
         return m.group(0)
-    new_md = re.sub(r"!\\[([^\\]*)\\]\\(([^)]+)\")", repl, md)
+    new_md = re.sub(r"!\[([^\]]*)\]\(([^)]+)\)", repl, md)
     return new_md, written
 
 
@@ -217,7 +289,7 @@ def fix_links(md: str) -> str:
                 target = f"../{parts[1]}/01-{slug(parts[-1] or 'index')}.md"
                 return f"[{text}]({target})"
         return m.group(0)
-    return re.sub(r"\\[([^\\]+)\\]\\(([^)]+)\")", repl, md)
+    return re.sub(r"\[([^\]]+)\]\(([^)]+)\)", repl, md)
 
 
 @APP.command()
@@ -257,7 +329,9 @@ def main(
             continue
 
         try:
-            md, html, title = asyncio.run(crawl_once(item.url, browser_cfg, run_cfg, save_html))
+            md, html, title, children = asyncio.run(
+                crawl_once(item.url, browser_cfg, run_cfg, save_html, cfg)
+            )
         except Exception as e:
             write_text(LOG_DIR / "errors.log", f"{item.url}\t{e}\n")
             continue
@@ -295,8 +369,9 @@ def main(
 
         # enqueue children
         if item.depth < depth_limit:
-            kids = discover_children(html_main, item.url, cfg)
-            for u in sorted(set(kids)):
+            kids = set(children)
+            kids.update(discover_children(html, item.url, cfg))
+            for u in sorted(kids):
                 if u not in seen and allowed_url(u, cfg):
                     queue.append(CrawlItem(u, item.depth + 1))
 

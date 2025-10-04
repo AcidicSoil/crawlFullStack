@@ -10,7 +10,7 @@ timeouts:
 retry:
   max_attempts: 3
   backoff_base: 1.6
-allowed_path_prefix: "/en/"
+allowed_path_prefix: "/en"
 allow_mime: ["text/html"]
 # Block noisy querystrings and infinite paths
 skip_query_params: ["utm_", "gclid", "fbclid", "ref", "share"]
