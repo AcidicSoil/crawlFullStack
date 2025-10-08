@@ -11,4 +11,5 @@
 dspy-data/
 *.egg-info/
 data/
+assets/
 
