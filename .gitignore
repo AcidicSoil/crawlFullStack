@@ -1,3 +1,17 @@
+/about/
+/challenge/
+/companies/
+/course/
+/faq/
+.vscode/
+.markdownlint.json
+/search/
+.markdownlint-cli2.jsonc
+
+dspy-data/
+*.egg-info/
+data/
+
 .venv/
 __pycache__/
 *.pyc
@@ -17,3 +31,39 @@ __pycache__/
 .gemini/
 .crawl4ai/
 fullstackopen_en_repo.egg-info/
+
+# Logs
+logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+dev-debug.log
+# Dependency directories
+node_modules/
+# Environment variables
+.env
+# Editor directories and files
+.idea
+.vscode
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+# OS specific
+
+.claude/
+.clinerules/
+.gemini/
+.cursor/
+.taskmaster/
+.browser-echo-mcp.json
+.mcp.json
+
+
+uv.lock
+
+# Task files
+# tasks.json
+# tasks/ 
