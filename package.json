@@ -1,0 +1,8 @@
+{
+  "scripts": {
+    "code": "codefetch --include-dir src -o src.md"
+  },
+  "devDependencies": {
+    "codefetch": "^1.6.1"
+  }
+}
