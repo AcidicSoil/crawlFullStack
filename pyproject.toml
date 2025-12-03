@@ -7,7 +7,7 @@ name = "fullstackopen-en-repo"
 version = "0.1.0"
 description = "Offline mirror of Full Stack Open (/en) course content as Markdown."
 readme = "README.md"
-requires-python = ">=3.13"
+requires-python = ">=3.12"
 dependencies = [
     "crawl4ai",
     "beautifulsoup4",
@@ -17,8 +17,9 @@ dependencies = [
     "requests",
     "rich",
     "typer",
-    "tomli",
+    "pyyaml",
     "chromium>=0.0.0",
+    "cssselect"
 ]
 
 [project.optional-dependencies]
@@ -27,6 +28,9 @@ dev = [
     "mypy",
     "bandit",
     "playwright",
+    "pytest",
+    "types-PyYAML",
+    "types-requests",
 ]
 
 [project.scripts]
@@ -35,14 +39,12 @@ crawl = "fullstackopen_en_repo.crawl_fullstackopen:APP"
 [tool.setuptools.packages.find]
 where = ["src"]
 
-[tool.ruff]
-line-length = 88
 
 [tool.ruff.lint]
-select = ["E", "F", "W", "I"]
+select = ["F", "W", "I"]
 ignore = []
 
 [tool.mypy]
-python_version = "3.13"
+python_version = "3.12"
 warn_return_any = true
 warn_unused_configs = true

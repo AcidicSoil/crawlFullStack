@@ -1,8 +1,10 @@
 {
   "scripts": {
-    "code": "codefetch --include-dir src -o src.md"
+    "code": "codefetch --include-dir src -o src.md",
+    "lint:docs": "markdownlint-cli2 \"docs/*.md\" \"!node_modules\""
   },
   "devDependencies": {
-    "codefetch": "^1.6.1"
+    "codefetch": "^1.6.1",
+    "markdownlint-cli2": "^0.19.0"
   }
 }

@@ -12,6 +12,7 @@ assets/
 dspy-data/
 *.egg-info/
 data/**
+**/.archived/**
 
 .venv/
 __pycache__/

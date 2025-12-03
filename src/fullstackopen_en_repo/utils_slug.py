@@ -1,8 +1,11 @@
 from __future__ import annotations
+
 import re
+
 from slugify import slugify
 
 SAFE_CHARS = "-abcdefghijklmnopqrstuvwxyz0123456789"
+
 
 def slug(s: str) -> str:
     base = slugify(s, lowercase=True)

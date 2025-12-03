@@ -1,39 +1,62 @@
-# path: fullstackopen-en-repo/scripts/postprocess.py
 from __future__ import annotations
-import json
-import re
+
 from pathlib import Path
+from typing import Literal
 
+import typer
+from rich import print
+
+from .indexing import write_index
+from .link_rewriter import rewrite_markdown_links
+from .markdown_utils import split_frontmatter
+from .profiles import load_profile
+
+APP = typer.Typer(add_completion=False)
 ROOT = Path(__file__).resolve().parents[1]
-DATA = ROOT / "data"
+DATA_DIR = ROOT / "data"
+LinkRewriteMode = Literal["none", "local"]
 
-# Convert absolute links to local relative paths (best-effort)
-for md_path in DATA.rglob("*.md"):
-    md = md_path.read_text(encoding="utf-8")
 
-    def repl(m):
-        text, href = m.group(1), m.group(2)
-        if href.startswith("https://fullstackopen.com/en/"):
-            parts = href.replace("https://fullstackopen.com/", "").strip("/").split("/")
-            if len(parts) >= 2:
-                target = Path("..") / parts[1] / f"01-{parts[-1] or 'index'}.md"
-                return f"[{text}]({target.as_posix()})"
-        return m.group(0)
+@APP.command()
+def main(
+    site: str = typer.Option(
+        "fullstackopen", "--site", help="Site profile id to postprocess"
+    ),
+    rewrite_links: LinkRewriteMode = typer.Option(
+        "none",
+        "--rewrite-links",
+        case_sensitive=False,
+        help="Rewrite internal links after crawl",
+    ),
+):
+    profile = load_profile(site, output_root=DATA_DIR)
+    rewritten = 0
 
-    md2 = re.sub(r"$([^$]+)$$([^)]+)$", repl, md)
-    if md != md2:
-        md_path.write_text(md2, encoding="utf-8")
+    for path in profile.output_root.rglob("*.md"):
+        text = path.read_text(encoding="utf-8")
+        meta, body, front = split_frontmatter(text)
+        source_url = meta.get("source_url")
+        if not source_url:
+            continue
+        canonical_source = profile.normalize_url(source_url)
+        if not profile.in_scope(canonical_source):
+            continue
+        new_body = body
+        if rewrite_links == "local":
+            new_body = rewrite_markdown_links(
+                body,
+                mode=rewrite_links,
+                profile=profile,
+                from_url=canonical_source,
+            )
+        if new_body != body:
+            prefix = front or ""
+            path.write_text(f"{prefix}{new_body}", encoding="utf-8")
+            rewritten += 1
 
-# rebuild global index
-index = {}
-for p in DATA.rglob("*.md"):
-    rel = p.relative_to(DATA).as_posix()
-    try:
-        content = p.read_text(encoding="utf-8")
-        meta = json.loads(content.split("---", 2)[1])
-    except Exception:
-        meta = {}
-    index[rel] = {"title": meta.get("title", p.stem), "path": rel}
-(ROOT / "index.json").write_text(
-    json.dumps(index, ensure_ascii=False, indent=2), encoding="utf-8"
-)
+    write_index(profile.output_root, ROOT / "index.json")
+    print({"rewritten": rewritten, "site": profile.id})
+
+
+if __name__ == "__main__":
+    APP()

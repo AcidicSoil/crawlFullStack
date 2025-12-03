@@ -1,0 +1,12 @@
+   Building fullstackopen-en-repo @ file:///home/user/projects/temp/fullstackopen-en-repo
+      Built fullstackopen-en-repo @ file:///home/user/projects/temp/fullstackopen-en-repo
+Uninstalled 1 package in 0.56ms
+Installed 1 package in 1ms
+src/fullstackopen_en_repo/profiles/loader.py:7: error: Library stubs not installed for "yaml"  [import-untyped]
+src/fullstackopen_en_repo/profiles/loader.py:7: note: Hint: "python3 -m pip install types-PyYAML"
+src/fullstackopen_en_repo/profiles/loader.py:7: note: (or run "mypy --install-types" to install all missing stub packages)
+src/fullstackopen_en_repo/profiles/loader.py:7: note: See https://mypy.readthedocs.io/en/stable/running_mypy.html#missing-imports
+src/fullstackopen_en_repo/crawl_fullstackopen.py:13: error: Library stubs not installed for "requests"  [import-untyped]
+src/fullstackopen_en_repo/crawl_fullstackopen.py:13: note: Hint: "python3 -m pip install types-requests"
+src/fullstackopen_en_repo/crawl_fullstackopen.py:15: error: Library stubs not installed for "yaml"  [import-untyped]
+Found 3 errors in 2 files (checked 17 source files)

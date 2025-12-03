@@ -1,6 +1,6 @@
 # Full Stack Open (/en) Offline Markdown Mirror
 
-This repo mirrors **<https://fullstackopen.com/en/>** to local Markdown for personal offline reference and programmatic reuse. It uses **crawl4ai** with strict safety guardrails.
+This repo mirrors course content into Markdown using **crawl4ai** with strict safety guardrails. The crawler now supports multiple “site profiles,” including the original **Full Stack Open** and the new **Next.js Learn** curriculum at `https://nextjs.org/learn`.
 
 ## Motivation
 
@@ -13,96 +13,129 @@ The primary motivation for this project is to create a personal, offline-first c
 
 ## Features
 
-- **Web Crawling:** Uses `crawl4ai` to efficiently crawl and download the course content.
-- **Markdown Conversion:** Converts the HTML content to clean, readable Markdown.
-- **Image Downloading:** Downloads and locally stores all images referenced in the course.
-- **Link Fixing:** Rewrites all links to point to the local Markdown files, ensuring a seamless offline experience.
-- **Link Validation:** A pre-commit hook is included to validate all internal links, preventing broken links.
-- **Safety First:** The crawler is configured with strict guardrails to only crawl the `/en/` section of `fullstackopen.com`, honors `robots.txt`, and uses conservative concurrency settings.
+- **Pluggable site profiles:** Scope, normalization, selectors, and output paths are encapsulated per site; `fullstackopen` and `nextjs-learn` ship in-tree with room for additional YAML-defined profiles later.
+- **Web crawling via Crawl4AI:** Headless browsing + markdown extraction with configurable CSS selectors.
+- **Markdown conversion + assets:** HTML → Markdown with local image downloads into a deterministic `assets/` directory.
+- **Optional link rewriting:** `--rewrite-links local` converts internal URLs to relative paths; `--rewrite-links none` (default) preserves the source URLs.
+- **Link validation + postprocess:** Shared link logic powers the crawler, postprocessor, and link checker, preventing drift.
+- **Testing + safety:** Pytest suites cover profiles/link rewriting, and the crawler honors robots.txt while constraining depth/hostnames.
 
 ## Install
 
-This project uses `uv` for environment and dependency management.
+Create an isolated environment (venv, uv, or hatch all work). Vanilla `venv` instructions:
 
 ```bash
-# Create and activate a virtual environment
-uv venv
+python3 -m venv .venv
 source .venv/bin/activate
+python -m pip install -e '.[dev]'
 
-# Install dependencies in editable mode, including dev tools
-uv pip install -e '.[dev]'
-
-# Optional: Install Playwright browsers for JS-rendered pages
+# Optional: install Playwright’s bundled Chromium for better JS rendering
 python -m playwright install chromium
 ```
 
-## One-command runs
+On Debian-based systems without `ensurepip`, install the `python3-full` package or fall back to `python3 -m pip install --user -e '.[dev]'`.
 
-The `crawl` command is defined in `pyproject.toml`.
+## How to use
+
+The Typer CLI is exposed as `crawl` via `pyproject.toml`. Key flags:
 
 ```bash
-# Full fresh crawl + postprocess + linkcheck
-uv run crawl --fresh
+# Crawl Full Stack Open (default site) without rewriting links
+crawl --site fullstackopen --rewrite-links none
 
-# Incremental since a date
-uv run crawl --since 2025-01-01
+# Crawl Next.js Learn and rewrite internal links to relative .md files
+crawl --site nextjs-learn --rewrite-links local --depth-limit 5
 
-# Dry run (no writes)
-uv run crawl --dry-run
+# Dry run (no writes) for planning
+crawl --site fullstackopen --dry-run
 
-# Save raw HTML alongside Markdown
-uv run crawl --save-html
+# Persist HTML alongside markdown for debugging
+crawl --save-html
 ```
 
-## Code Quality
-
-This project uses `ruff` for linting/formatting, `mypy` for type checking, and `bandit` for security scanning.
+Both the postprocess and linkcheck helpers accept the same knobs:
 
 ```bash
-# Format code
+python -m fullstackopen_en_repo.postprocess --site nextjs-learn --rewrite-links local
+python -m fullstackopen_en_repo.linkcheck --site nextjs-learn
+```
+
+Typical workflow:
+
+1. **Crawl** the desired site profile, optionally saving HTML:
+
+   ```bash
+   crawl --site fullstackopen --rewrite-links none
+   crawl --site nextjs-learn --rewrite-links local --save-html
+   ```
+
+2. **Postprocess** to switch link rewrite modes or rebuild `index.json` without re-crawling:
+
+   ```bash
+   python -m fullstackopen_en_repo.postprocess --site nextjs-learn --rewrite-links local
+   ```
+
+3. **Linkcheck** to ensure local references resolve:
+
+   ```bash
+   python -m fullstackopen_en_repo.linkcheck --site nextjs-learn
+   ```
+
+Link rewriting is always optional. Markdown is first stored exactly as Crawl4AI produced it; postprocess can be re-run later with a different mode if needed.
+
+> **Tip:** Re-running `crawl` now skips writing pages whose stored checksum matches the freshly scraped content, so repeated runs won't duplicate data. Pass `--fresh` if you need to rewrite everything regardless.
+
+Need alternate frontmatter? Pass `--frontmatter-template simple` to emit the YAML style from `frontmatter-example.txt` (with `id`/`title` fields plus metadata), otherwise the default JSON metadata block is used.
+
+## Code Quality & Tests
+
+Static analysis:
+
+```bash
 ruff format .
-
-# Lint for issues
 ruff check .
-
-# Type check
 mypy .
-
-# Run security scan
 bandit -r .
+```
+
+Unit tests exercise the profile + link rewriting logic:
+
+```bash
+pytest
 ```
 
 ## Project Structure
 
 ```
 fullstackopen-en-repo/
-├── .githooks/
-│   └── pre-commit
-├── assets/
-│   └── .keep
-├── data/
-│   └── .keep
-├── logs/
-│   └── .keep
-├── src/
-│   └── fullstackopen_en_repo/
-│       ├── crawl_fullstackopen.py
-│       ├── linkcheck.py
-│       ├── postprocess.py
-│       └── utils_slug.py
-├── .gitignore
-├── crawl.config.yml
-├── main.py
-├── pyproject.toml
-├── README.md
-└── seeds.txt
+├── assets/                # Downloaded images
+├── data/                  # Markdown output tree (per site profile)
+├── docs/                  # Aux docs / agent briefs
+├── .githooks/pre-commit   # Optional linkcheck hook
+├── src/fullstackopen_en_repo/
+│   ├── crawl_fullstackopen.py   # Typer CLI entry point
+│   ├── indexing.py              # index.json builder
+│   ├── link_rewriter.py         # shared Markdown link mutator
+│   ├── markdown_utils.py        # helpers for frontmatter parsing
+│   ├── linkcheck.py             # CLI link validator
+│   ├── postprocess.py           # CLI to re-run link rewriting / index
+│   ├── profiles/
+│   │   ├── base.py              # SiteProfile abstraction
+│   │   ├── config_profile.py    # YAML-driven profile implementation
+│   │   ├── fullstackopen.py     # Legacy mapping
+│   │   └── nextjs_learn.py      # Next.js Learn site profile
+│   └── utils_slug.py
+├── tests/                # Pytest suites for profiles/link rewriting
+├── crawl.config.yml      # Generic crawl knobs (UA, timeouts, selectors)
+├── pyproject.toml        # Dependencies + CLI entry point
+└── README.md
 ```
 
 ## Refresh later
 
-- Update `seeds.txt` if the course gains new parts.
-- Re-run with `--since YYYY-MM-DD` to limit fetches.
-- Deterministic queue: URLs sorted, stable slugging, normalized headings.
+- Update or add site profiles (YAML or Python) when targeting new courses.
+- Re-run with `--since YYYY-MM-DD` once incremental crawling support is implemented.
+- Deterministic queue: URLs sorted, normalized headings, and slugged filenames keep diffs readable.
 
 ## Pre-commit hook
 

@@ -1,3 +1,142 @@
 {
-  
+  "nextjs-learn/index.md": {
+    "title": "Start building with Next.js",
+    "path": "nextjs-learn/index.md"
+  },
+  "nextjs-learn/dashboard-app/index.md": {
+    "title": "App Router",
+    "path": "nextjs-learn/dashboard-app/index.md"
+  },
+  "nextjs-learn/dashboard-app/static-and-dynamic-rendering.md": {
+    "title": "Static and Dynamic Rendering",
+    "path": "nextjs-learn/dashboard-app/static-and-dynamic-rendering.md"
+  },
+  "nextjs-learn/dashboard-app/adding-authentication.md": {
+    "title": "Adding Authentication",
+    "path": "nextjs-learn/dashboard-app/adding-authentication.md"
+  },
+  "nextjs-learn/dashboard-app/creating-layouts-and-pages.md": {
+    "title": "Creating Layouts and Pages",
+    "path": "nextjs-learn/dashboard-app/creating-layouts-and-pages.md"
+  },
+  "nextjs-learn/dashboard-app/mutating-data.md": {
+    "title": "Mutating Data",
+    "path": "nextjs-learn/dashboard-app/mutating-data.md"
+  },
+  "nextjs-learn/dashboard-app/error-handling.md": {
+    "title": "Handling Errors",
+    "path": "nextjs-learn/dashboard-app/error-handling.md"
+  },
+  "nextjs-learn/dashboard-app/next-steps.md": {
+    "title": "Next Steps",
+    "path": "nextjs-learn/dashboard-app/next-steps.md"
+  },
+  "nextjs-learn/dashboard-app/improving-accessibility.md": {
+    "title": "Improving Accessibility",
+    "path": "nextjs-learn/dashboard-app/improving-accessibility.md"
+  },
+  "nextjs-learn/dashboard-app/adding-search-and-pagination.md": {
+    "title": "Adding Search and Pagination",
+    "path": "nextjs-learn/dashboard-app/adding-search-and-pagination.md"
+  },
+  "nextjs-learn/dashboard-app/optimizing-fonts-images.md": {
+    "title": "Optimizing Fonts and Images",
+    "path": "nextjs-learn/dashboard-app/optimizing-fonts-images.md"
+  },
+  "nextjs-learn/dashboard-app/adding-metadata.md": {
+    "title": "Adding Metadata",
+    "path": "nextjs-learn/dashboard-app/adding-metadata.md"
+  },
+  "nextjs-learn/dashboard-app/navigating-between-pages.md": {
+    "title": "Navigating Between Pages",
+    "path": "nextjs-learn/dashboard-app/navigating-between-pages.md"
+  },
+  "nextjs-learn/dashboard-app/fetching-data.md": {
+    "title": "Fetching Data",
+    "path": "nextjs-learn/dashboard-app/fetching-data.md"
+  },
+  "nextjs-learn/dashboard-app/css-styling.md": {
+    "title": "CSS Styling",
+    "path": "nextjs-learn/dashboard-app/css-styling.md"
+  },
+  "nextjs-learn/dashboard-app/getting-started.md": {
+    "title": "Getting Started",
+    "path": "nextjs-learn/dashboard-app/getting-started.md"
+  },
+  "nextjs-learn/dashboard-app/setting-up-your-database.md": {
+    "title": "Setting Up Your Database",
+    "path": "nextjs-learn/dashboard-app/setting-up-your-database.md"
+  },
+  "nextjs-learn/dashboard-app/streaming.md": {
+    "title": "Streaming",
+    "path": "nextjs-learn/dashboard-app/streaming.md"
+  },
+  "nextjs-learn/accessibility/index.md": {
+    "title": "untitled",
+    "path": "nextjs-learn/accessibility/index.md"
+  },
+  "nextjs-learn/pages-router/index.md": {
+    "title": "Pages Router",
+    "path": "nextjs-learn/pages-router/index.md"
+  },
+  "nextjs-learn/pages-router/create-nextjs-app-setup.md": {
+    "title": "Set up a new Next.js app",
+    "path": "nextjs-learn/pages-router/create-nextjs-app-setup.md"
+  },
+  "nextjs-learn/pages-router/create-nextjs-app-welcome-to-nextjs.md": {
+    "title": "Welcome to Next.js",
+    "path": "nextjs-learn/pages-router/create-nextjs-app-welcome-to-nextjs.md"
+  },
+  "nextjs-learn/pages-router/create-nextjs-app-editing-the-page.md": {
+    "title": "Editing the Page",
+    "path": "nextjs-learn/pages-router/create-nextjs-app-editing-the-page.md"
+  },
+  "nextjs-learn/pages-router/navigate-between-pages.md": {
+    "title": "Navigate Between Pages",
+    "path": "nextjs-learn/pages-router/navigate-between-pages.md"
+  },
+  "nextjs-learn/reacting-to-input-with-state/index.md": {
+    "title": "untitled",
+    "path": "nextjs-learn/reacting-to-input-with-state/index.md"
+  },
+  "nextjs-learn/react-foundations/rendering-ui.md": {
+    "title": "Rendering User Interfaces (UI)",
+    "path": "nextjs-learn/react-foundations/rendering-ui.md"
+  },
+  "nextjs-learn/react-foundations/what-is-react-and-nextjs.md": {
+    "title": "About React and Next.js",
+    "path": "nextjs-learn/react-foundations/what-is-react-and-nextjs.md"
+  },
+  "nextjs-learn/react-foundations/index.md": {
+    "title": "React Foundations",
+    "path": "nextjs-learn/react-foundations/index.md"
+  },
+  "nextjs-learn/react-foundations/installation.md": {
+    "title": "Installing Next.js",
+    "path": "nextjs-learn/react-foundations/installation.md"
+  },
+  "nextjs-learn/react-foundations/next-steps.md": {
+    "title": "Next Steps",
+    "path": "nextjs-learn/react-foundations/next-steps.md"
+  },
+  "nextjs-learn/react-foundations/from-react-to-nextjs.md": {
+    "title": "From React to Next.js",
+    "path": "nextjs-learn/react-foundations/from-react-to-nextjs.md"
+  },
+  "nextjs-learn/react-foundations/getting-started-with-react.md": {
+    "title": "Getting Started with React",
+    "path": "nextjs-learn/react-foundations/getting-started-with-react.md"
+  },
+  "nextjs-learn/react-foundations/server-and-client-components.md": {
+    "title": "Server and Client Components",
+    "path": "nextjs-learn/react-foundations/server-and-client-components.md"
+  },
+  "nextjs-learn/react-foundations/updating-ui-with-javascript.md": {
+    "title": "Updating UI with Javascript",
+    "path": "nextjs-learn/react-foundations/updating-ui-with-javascript.md"
+  },
+  "nextjs-learn/tutorial-tic-tac-toe/index.md": {
+    "title": "untitled",
+    "path": "nextjs-learn/tutorial-tic-tac-toe/index.md"
+  }
 }
