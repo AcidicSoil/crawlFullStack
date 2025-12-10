@@ -6,5 +6,8 @@
   "devDependencies": {
     "codefetch": "^1.6.1",
     "markdownlint-cli2": "^0.19.0"
+  },
+  "dependencies": {
+    "codex": "^0.2.3"
   }
 }
